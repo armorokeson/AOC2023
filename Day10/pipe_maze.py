@@ -11,9 +11,32 @@ def find_start_pos(maze):
             if maze[i][j] == 'S':
                 return (i,j)
             
+
+def map_to_next_dir(position_from_last, pipe):
+    if position_from_last == 1:
+        if pipe == '|': return 1
+        if pipe == '7': return 2 
+        if pipe == 'F': return 3
+    if position_from_last == 2:
+        if pipe == 'L': return 2
+        if pipe == '-': return 3
+        if pipe == 'F': return 4
+    if position_from_last == 3:
+        if pipe == 'J': return 1
+        if pipe == '-': return 3
+        if pipe == '7': return 4
+    if position_from_last == 4:
+        if pipe == 'J': return 2
+        if pipe == 'L': return 3
+        if pipe == '|': return 4
+
             
-def solve(maze, start1, start2):
-    None
+def solve(maze, s1r, s1c, s2r, s2c, s1_from_start, s2_from_start):
+    curr_pipe1 = None
+    curr_pipe2 = None 
+
+    while True:
+        None
 
 
 def part1():
@@ -32,20 +55,20 @@ def part1():
     (sr,sc) = find_start_pos(maze)
 
     # find where the loop starts on either end of s
-    side1 = (sr-1,sc) if maze[sr-1][sc] in top else (sr,sc+1)
-    side2 = (sr+1,sc) if maze[sr+1][sc] in bottom else (sr+1,sc)  
+    if maze[sr-1][sc] in top:
+        side1 = (sr-1, sc, 1)
+    else:
+        side1 = (sr, sc+1, 3)
+    
+    if maze[sr+1][sc] in bottom:
+        side2 = (sr+1, sc, 4)
+    else:
+        side2 = (sr, sc-1, 2)
+    
     
     
 part1()
 
-
 #   1
 # 2 S 3
 #   4
-
-# 1,7 = - or F 
-# 1,| = | or 7 or F
-# 1,F = - or 7 
-# 2,F = - or 7
-# 2,L = - or F
-# 2,- = F or L or J 
