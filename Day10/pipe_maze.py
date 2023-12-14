@@ -18,8 +18,8 @@ def map_to_next_dir(position_from_last, pipe):
         if pipe == '7': return 2 
         if pipe == 'F': return 3
     if position_from_last == 2:
-        if pipe == 'L': return 2
-        if pipe == '-': return 3
+        if pipe == 'L': return 1
+        if pipe == '-': return 2
         if pipe == 'F': return 4
     if position_from_last == 3:
         if pipe == 'J': return 1
@@ -29,32 +29,32 @@ def map_to_next_dir(position_from_last, pipe):
         if pipe == 'J': return 2
         if pipe == 'L': return 3
         if pipe == '|': return 4
+    return(-1)
 
             
-def solve(maze, s1r, s1c, s2r, s2c, s1_from_start, s2_from_start):
+def solve(maze, s1r, s1c, s2r, s2c, s1_from_start, s2_from_start, start):
     steps = 0
     while True:
-        print(steps)
+        steps += 1
+
         if s1r == s2r and s1c == s2c:
-            print(maze[s1r][s1c], maze[s2r][s2c])
             return steps
         
-        steps += 1
         next_pipe = map_to_next_dir(s1_from_start, maze[s1r][s1c])
         s1_from_start = next_pipe
         
-        if next_pipe == 1: s1r -= 1
+        if next_pipe == 1:   s1r -= 1
         elif next_pipe == 2: s1c -= 1
         elif next_pipe == 3: s1c += 1
-        else: s1r += 1
+        elif next_pipe == 4: s1r += 1
         
         next_pipe = map_to_next_dir(s2_from_start, maze[s2r][s2c])
         s2_from_start = next_pipe
         
-        if next_pipe == 1: s2r -= 1
+        if next_pipe == 1:   s2r -= 1
         elif next_pipe == 2: s2c -= 1
         elif next_pipe == 3: s2c += 1
-        else: s2r += 1
+        elif next_pipe == 4: s2r += 1
 
 
 def part1():
@@ -70,7 +70,7 @@ def part1():
         print(line)
     
     # get the position of our starting location
-    (sr,sc) = find_start_pos(maze)
+    (sr,sc) = start = find_start_pos(maze)
 
     # find where the loop starts on either end of s
     if maze[sr-1][sc] in top:
@@ -111,7 +111,7 @@ def part1():
     print(side2)
         
         
-    print(solve(maze, side1[0], side1[1], side2[0], side2[1], side1[2], side2[2]))
+    print(solve(maze, side1[0], side1[1], side2[0], side2[1], side1[2], side2[2], start))
     
     
     
