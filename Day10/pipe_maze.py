@@ -1,9 +1,50 @@
 import sys
 
+#   1
+# 2 S 3
+#   4
+
 top = '|7F'         # valid if on top
 bottom = '|LJ'      # valid if on bottom
 left = '-LF'        # valid if on left side
 right = '-7J'       # valid if on right side
+
+def find_first_second_pipe(maze, start):
+    (sr,sc) = start
+    if maze[sr-1][sc] in top:
+        side1 = (sr-1, sc, 1)
+        if maze[sr+1][sc] in bottom:
+            side2 = (sr+1, sc, 4)
+        elif maze[sr][sc+1] in right:
+            side2 = (sr, sc+1, 3)
+        elif maze[sr][sc-1] in left:
+            side2 = (sr, sc-1, 2)
+    elif maze[sr+1][sc] in bottom:
+        side1 = (sr+1, sc, 4)
+        if maze[sr-1][sc] in top:
+            side2 = (sr-1, sc, 1)
+        elif maze[sr][sc+1] in right:
+            side2 = (sr, sc+1, 3)
+        elif maze[sr][sc-1] in left:
+            side2 = (sr, sc-1, 2)
+    elif maze[sr][sc+1] in right:
+        side1 = (sr, sc+1, 3)
+        if maze[sr-1][sc] in top:
+            side2 = (sr-1, sc, 1)
+        elif maze[sr+1][sc] in bottom:
+            side2 = (sr+1, sc, 4)
+        elif maze[sr][sc-1] in left:
+            side2 = (sr, sc-1, 2)
+    elif maze[sr][sc-1] in left:
+        side1 = (sr, sc-1, 2)
+        if maze[sr-1][sc] in top:
+            side2 = (sr-1, sc, 1)
+        elif maze[sr+1][sc] in bottom:
+            side2 = (sr+1, sc, 4)
+        elif maze[sr][sc+1] in right:
+            side2 = (sr, sc+1, 3)
+            
+    return side1,side2
 
 def find_start_pos(maze):
     for i in range(len(maze)):
@@ -65,58 +106,13 @@ def part1():
     maze.insert(0, '.'*(len(maze[0])))
     for i in range(len(maze)):
         maze[i] = '.' + maze[i] + '.'
-        
-    for line in maze:
-        print(line)
     
     # get the position of our starting location
     (sr,sc) = start = find_start_pos(maze)
 
     # find where the loop starts on either end of s
-    if maze[sr-1][sc] in top:
-        side1 = (sr-1, sc, 1)
-        if maze[sr+1][sc] in bottom:
-            side2 = (sr+1, sc, 4)
-        elif maze[sr][sc+1] in right:
-            side2 = (sr, sc+1, 3)
-        elif maze[sr][sc-1] in left:
-            side2 = (sr, sc-1, 2)
-    elif maze[sr+1][sc] in bottom:
-        side1 = (sr+1, sc, 4)
-        if maze[sr-1][sc] in top:
-            side2 = (sr-1, sc, 1)
-        elif maze[sr][sc+1] in right:
-            side2 = (sr, sc+1, 3)
-        elif maze[sr][sc-1] in left:
-            side2 = (sr, sc-1, 2)
-    elif maze[sr][sc+1] in right:
-        side1 = (sr, sc+1, 3)
-        if maze[sr-1][sc] in top:
-            side2 = (sr-1, sc, 1)
-        elif maze[sr+1][sc] in bottom:
-            side2 = (sr+1, sc, 4)
-        elif maze[sr][sc-1] in left:
-            side2 = (sr, sc-1, 2)
-    elif maze[sr][sc-1] in left:
-        side1 = (sr, sc-1, 2)
-        if maze[sr-1][sc] in top:
-            side2 = (sr-1, sc, 1)
-        elif maze[sr+1][sc] in bottom:
-            side2 = (sr+1, sc, 4)
-        elif maze[sr][sc+1] in right:
-            side2 = (sr, sc+1, 3)
+    side1,side2 = find_first_second_pipe(maze, start)
     
-    print(sr,sc)
-    print(side1)
-    print(side2)
-        
-        
     print(solve(maze, side1[0], side1[1], side2[0], side2[1], side1[2], side2[2], start))
-    
-    
-    
+       
 part1()
-
-#   1
-# 2 S 3
-#   4
