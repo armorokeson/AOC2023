@@ -32,11 +32,29 @@ def map_to_next_dir(position_from_last, pipe):
 
             
 def solve(maze, s1r, s1c, s2r, s2c, s1_from_start, s2_from_start):
-    curr_pipe1 = None
-    curr_pipe2 = None 
-
+    steps = 0
     while True:
-        None
+        print(steps)
+        if s1r == s2r and s1c == s2c:
+            print(maze[s1r][s1c], maze[s2r][s2c])
+            return steps
+        
+        steps += 1
+        next_pipe = map_to_next_dir(s1_from_start, maze[s1r][s1c])
+        s1_from_start = next_pipe
+        
+        if next_pipe == 1: s1r -= 1
+        elif next_pipe == 2: s1c -= 1
+        elif next_pipe == 3: s1c += 1
+        else: s1r += 1
+        
+        next_pipe = map_to_next_dir(s2_from_start, maze[s2r][s2c])
+        s2_from_start = next_pipe
+        
+        if next_pipe == 1: s2r -= 1
+        elif next_pipe == 2: s2c -= 1
+        elif next_pipe == 3: s2c += 1
+        else: s2r += 1
 
 
 def part1():
@@ -57,13 +75,43 @@ def part1():
     # find where the loop starts on either end of s
     if maze[sr-1][sc] in top:
         side1 = (sr-1, sc, 1)
-    else:
+        if maze[sr+1][sc] in bottom:
+            side2 = (sr+1, sc, 4)
+        elif maze[sr][sc+1] in right:
+            side2 = (sr, sc+1, 3)
+        elif maze[sr][sc-1] in left:
+            side2 = (sr, sc-1, 2)
+    elif maze[sr+1][sc] in bottom:
+        side1 = (sr+1, sc, 4)
+        if maze[sr-1][sc] in top:
+            side2 = (sr-1, sc, 1)
+        elif maze[sr][sc+1] in right:
+            side2 = (sr, sc+1, 3)
+        elif maze[sr][sc-1] in left:
+            side2 = (sr, sc-1, 2)
+    elif maze[sr][sc+1] in right:
         side1 = (sr, sc+1, 3)
+        if maze[sr-1][sc] in top:
+            side2 = (sr-1, sc, 1)
+        elif maze[sr+1][sc] in bottom:
+            side2 = (sr+1, sc, 4)
+        elif maze[sr][sc-1] in left:
+            side2 = (sr, sc-1, 2)
+    elif maze[sr][sc-1] in left:
+        side1 = (sr, sc-1, 2)
+        if maze[sr-1][sc] in top:
+            side2 = (sr-1, sc, 1)
+        elif maze[sr+1][sc] in bottom:
+            side2 = (sr+1, sc, 4)
+        elif maze[sr][sc+1] in right:
+            side2 = (sr, sc+1, 3)
     
-    if maze[sr+1][sc] in bottom:
-        side2 = (sr+1, sc, 4)
-    else:
-        side2 = (sr, sc-1, 2)
+    print(sr,sc)
+    print(side1)
+    print(side2)
+        
+        
+    print(solve(maze, side1[0], side1[1], side2[0], side2[1], side1[2], side2[2]))
     
     
     
