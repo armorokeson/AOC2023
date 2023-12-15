@@ -2,6 +2,7 @@ import sys
 import re
 import threading
 import time
+from tqdm import tqdm
 
 def mapper(s, m):
     for n in m:
@@ -12,8 +13,8 @@ def mapper(s, m):
 
 def getLocations(seeds, maps):
     curr_smallest = sys.maxsize
-    for seed in seeds:
-        location = seed
+    for i in tqdm(range(len(seeds))):
+        location = seeds[i]
         for m in maps:
             # make them all ints so I dont have to cast
             m = list(map(int, re.findall(r'\d+', m)))
@@ -25,7 +26,7 @@ def getLocations(seeds, maps):
             
             location = mapper(location, n)
             
-        if seed == seeds[0]:
+        if seeds[i] == seeds[0]:
             curr_smallest = location
             
         if location < curr_smallest:
