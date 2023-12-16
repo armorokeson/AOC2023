@@ -3,6 +3,7 @@ from tqdm import tqdm
 
 file = open(sys.argv[-1], 'r').read().splitlines()
 
+# rotate matrix
 file = list(zip(*file))
 platform = [list(col) for col in file]
 
@@ -17,6 +18,7 @@ platform = [list(col) for col in file]
 # ....#.....
 # .#.O.#O...
 
+# move round rocks as far as they can go
 for i in range(len(platform)):
     empty_space = 0
     for j in range(len(platform[i])):
@@ -28,19 +30,12 @@ for i in range(len(platform)):
             platform[i][j] = '.'
         else:
             empty_space = 0
-            
-print()
-for n in platform:
-    print(''.join(n))
                             
+# rotate it back                           
 platform = [list(col) for col in list(zip(*platform))]
 
-print()
-for n in platform:
-    print(''.join(n))
-
 load = 0
-row_load = 10
+row_load = len(platform)
 for row in platform:
     load += row_load * row.count('O')
     row_load -= 1
