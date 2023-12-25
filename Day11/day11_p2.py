@@ -1,3 +1,5 @@
+# try making the expansion edge weights
+
 import sys
 from tqdm import tqdm
 
@@ -34,6 +36,27 @@ def get_positions(universe):
     
 
 def run(universe):
+    original_positions = get_positions(universe)
+    
+    original_matrix = [[-1]*len(original_positions)]*len(original_positions)
+    
+    # for i in range(len(original_positions)):
+    #     for j in range(len(original_positions)):
+    #         dist = calculate_distance(original_positions[i], original_positions[j])
+    #         print(i,j,dist)
+
+    #         if original_matrix[i][j] == -1:
+    #             original_matrix[i][j] = dist
+                
+    for j in range(len(original_positions)):
+        dist = calculate_distance(original_positions[1], original_positions[j])
+        if original_matrix[1][j] == -1:
+            original_matrix[1][j] = dist
+           
+    for n in original_matrix:
+        print(n)
+    print()
+    
     # expand the universe
     universe = expand_universe(universe)
 
@@ -42,13 +65,14 @@ def run(universe):
     universe = [list(col) for col in zip(*universe)]
         
     # find galaxy positions
-    galaxy_positions = get_positions(universe)
+    galaxy_positions = get_positions(universe)    
 
     ans = 0
     for i in range(len(galaxy_positions)):
         for j in range(len(galaxy_positions)):
             ans += calculate_distance(galaxy_positions[i], galaxy_positions[j])
     
+    print(original_positions)
     print(galaxy_positions)
     print(int(ans/2))
 
